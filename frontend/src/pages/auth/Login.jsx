@@ -37,7 +37,11 @@ export default function Login() {
           ? (x.message || t('common.error'))
           : x.status === 401 || x.status === 400
           ? t('auth.invalid')
-          : t('common.error')
+          : x.message === 'timeout'
+          ? (lang === 'ar' ? 'انتهت مهلة الاتصال بالخادم. يرجى المحاولة مرة أخرى.' : 'Connection timed out. Please try again.')
+          : x.status === 0 || x.message === 'network'
+          ? (lang === 'ar' ? 'تعذر الاتصال بالخادم. يرجى التأكد من تشغيل النظام والمحاولة ثانيةً.' : 'Unable to connect to the backend server. Please verify the system is running and try again.')
+          : (x.message || t('common.error'))
       );
     } finally {
       setBusy(false);
